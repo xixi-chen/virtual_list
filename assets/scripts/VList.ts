@@ -3789,23 +3789,21 @@ export class VList extends ScrollView {
         const offset = this.getScrollOffset();
         const max = this.getMaxScrollOffset();
 
-        // Keep cross-axis untouched. Some horizontal/page lists use negative offset.x.
+        // Keep cross-axis untouched. Cocos getScrollOffset().x is negative for
+        // horizontal scrolling, while scrollToOffset() expects a positive x offset.
         let clampedX = offset.x;
         let clampedY = offset.y;
 
-        if (this.vertical && !this.horizontal) {
-            clampedX = offset.x;
-            clampedY = Math.max(0, Math.min(offset.y, max.y));
-        } else if (this.horizontal && !this.vertical) {
+        if (this.horizontal) {
             clampedX = Math.max(-max.x, Math.min(offset.x, 0));
-            clampedY = offset.y;
-        } else {
-            clampedX = Math.max(0, Math.min(offset.x, max.x));
+        }
+        if (this.vertical) {
             clampedY = Math.max(0, Math.min(offset.y, max.y));
         }
 
         if (clampedX != offset.x || clampedY != offset.y) {
-            this.scrollToOffset(new Vec2(clampedX, clampedY), 0, false);
+            const targetX = this.horizontal ? -clampedX : clampedX;
+            this.scrollToOffset(new Vec2(targetX, clampedY), 0, false);
         }
     }
 
@@ -5298,4 +5296,3 @@ var s_scrollPos: Vec2 = new Vec2();
 const _tempVec2 = new Vec2();
 const _tempVec2_1 = new Vec2();
 const EPSILON = 1e-4;
-

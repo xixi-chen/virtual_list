@@ -24,6 +24,7 @@ All notable changes to this project are documented in this file.
 
 ### Fixed
 
+- Fixed horizontal virtual lists jumping back to the start after repeated fast tail drags.
 - Fixed possible out-of-range access in `cleanupUnusedVirtualChildren(...)`.
 - Fixed frame-mode edge-case crash:
 - `Cannot read properties of undefined (reading 'obj')`
